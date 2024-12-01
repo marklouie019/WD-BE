@@ -1,7 +1,7 @@
 // NAVBAR
 var customNavbar = document.getElementById('customNavbar');
 customNavbar.innerHTML = `
-                    <a class="nav-logo" href="../" onclick="displayMenu()" onmouseenter="applyCursorEffect()"
+                    <a class="nav-logo" href="./" onclick="displayMenu()" onmouseenter="applyCursorEffect()"
                         onmouseleave="revertCursorEffect()"><img src="assets/img/lo-logo-stroke.svg"></a>
                     <div class="menu-icon" id="menuIcon" onclick="displayMenu()" onmouseenter="applyCursorEffect()"
                         onmouseleave="revertCursorEffect()"></div>`;
@@ -78,17 +78,17 @@ menuDisplay.innerHTML = `<ul>
                                     onmouseleave="revertCursorEffect()">HOME</span></a>
                         </li>
                         <li class="menu-display option">
-                            <a href="projects.html"><span class="menu num">02</span><span
+                            <a href="projects.php"><span class="menu num">02</span><span
                                     class="menu opt" onmouseenter="applyCursorEffect()"
                                     onmouseleave="revertCursorEffect()">PROJECTS</span></a>
                         </li>
                         <li class="menu-display option">
-                            <a href="about.html"><span class="menu num">03</span><span
+                            <a href="about.php"><span class="menu num">03</span><span
                                     class="menu opt" onmouseenter="applyCursorEffect()"
                                     onmouseleave="revertCursorEffect()">ABOUT</span></a>
                         </li>
                         <li class="menu-display option">
-                            <a href="contact.html"><span class="menu num">04</span><span
+                            <a href="contact.php"><span class="menu num">04</span><span
                                     class="menu opt" onmouseenter="applyCursorEffect()"
                                     onmouseleave="revertCursorEffect()">CONTACT</span></a>
                         </li>
@@ -97,46 +97,11 @@ menuDisplay.innerHTML = `<ul>
 // GENERATE PROJECT LIST
 const projectList = [
     {
-        "name": "THE NEW IPHONE 16",
+        "name": "Islands of Personality",
         "url": "./",
-        "activityNum": "4",
-        "thumbnail": "iphone16-thumbnail.png",
-        "description": "DEVICE SHOWCASE"
-    },
-    {
-        "name": "EXPLORE JAPAN",
-        "url": "./",
-        "activityNum": "5",
-        "thumbnail": "explorejapan-thumbnail.png",
-        "description": "PLACE SHOWCASE"
-    },
-    {
-        "name": "ESTHETIQUE",
-        "url": "./",
-        "activityNum": "6",
-        "thumbnail": "esthetique-thumbnail.png",
-        "description": "WEB GALLERY"
-    },
-    {
-        "name": "VALORANT SPIKE | WIKI",
-        "url": "./",
-        "activityNum": "7",
-        "thumbnail": "valo-thumbnail.png",
-        "description": "REST API INTEGRATION"
-    },
-    {
-        "name": "MLBB | INTROPLAY",
-        "url": "./",
-        "activityNum": "8",
-        "thumbnail": "introplay-thumbnail.png",
-        "description": "VIDEO WEBPAGE"
-    },
-    {
-        "name": "ARIZONA",
-        "url": "./",
-        "activityNum": "9",
-        "thumbnail": "arizona-thumbnail.png",
-        "description": "PARALLAX"
+        "activityNum": "08",
+        "thumbnail": null,
+        "description": "FIRST BACKEND PROJECT"
     }
 ];
 
@@ -162,7 +127,7 @@ function generateProjects() {
                                         <div class="project-desc">
                                             <p>`+ projectList[i].description + `</p>
                                             <div class="button mt-5 mb-4 col-6">
-                                                <a target="_blank" href="activities/activity-`+ projectList[i].activityNum + `/` + projectList[i].url + `">
+                                                <a target="_blank" href="projects/A`+ projectList[i].activityNum + `/` + projectList[i].url + `">
                                                     <div class="btn-redirect2 fontTheme"
                                                         onmouseenter="applyCursorEffect()"
                                                         onmouseleave="revertCursorEffect()">VISIT</div>

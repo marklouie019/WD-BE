@@ -1,0 +1,14 @@
+/* FONT HOSTING */
+@font-face {
+    font-family: 'Inside Out';
+    src: url('InsideOut-DAp0.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Studio Feixen Variable';
+    src: url('studio-feixen-sans-variable.woff2') format('woff2-variations');
+    font-weight: 0 1000;
+    font-display: swap;
+}
