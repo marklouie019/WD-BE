@@ -5,8 +5,6 @@ $pageContent = 'island-list.php';
 
 ?>
 
-
-
 <!DOCTYPE html>
 <html>
 

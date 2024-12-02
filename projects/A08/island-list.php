@@ -1,8 +1,22 @@
 <?php
 include("connect.php");
+include("assets/php/classes.php");
+
+$cards = array();
 
 $islandsQuery = "SELECT * FROM islandsOfPersonality";
-$resultIslandList = executeQuery($islandsQuery);
+$islandsResult = executeQuery($islandsQuery);
+
+while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
+    $c = new IslandPersonality(
+        $islandRow['islandOfPersonalityID'],
+        $islandRow['name'],
+        $islandRow['shortDescription'],
+        $islandRow['image']
+    );
+
+    array_push($cards, $c);
+}
 
 ?>
 
@@ -101,25 +115,15 @@ $resultIslandList = executeQuery($islandsQuery);
             <div class="noise">
                 <div id="carouselExampleCaptions" class="carousel slide">
                     <div class="carousel-inner">
-                        <?php
-                        if (mysqli_num_rows($resultIslandList) > 0) {
-                            $counter = 0;
-                            while ($islandListItem = mysqli_fetch_assoc($resultIslandList)) {
-                                ?>
-                                <div class="carousel-item <?php echo ($counter == 0) ? 'active' : ''; ?>">
-                                    <a href="view.php">
-                                        <img src="assets/img/<?php echo $islandListItem['image'] ?>"
-                                            class="island-li d-block w-100" alt="<?php echo $islandListItem['name'] ?>">
-                                        <div class="carousel-caption">
-                                            <h5><?php echo $islandListItem['name'] ?></h5>
-                                            <p class="description"><?php echo $islandListItem['shortDescription'] ?></p>
-                                        </div>
-                                    </a>
-                                </div>
-                                <?php
-                                $counter++;
-                            }
-                        } ?>
+                        <?php $counter = 0; ?>
+                        <?php foreach ($cards as $card) { ?>
+                            <?php
+                            $status = $counter == 0;
+                            $card->isIslandActive($status);
+                            echo $card->buildCard();
+                            $counter++;
+                            ?>
+                        <?php } ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                         data-bs-slide="prev">

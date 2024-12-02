@@ -1,7 +1,16 @@
 <?php
 include("connect.php");
 
+$islandID = $_GET['islandOfPersonalityID'];
 
+$islandQuery = "SELECT DISTINCT islandsOfPersonality.image AS contentImage,
+                islandsOfPersonality.name,
+                islandsOfPersonality.longDescription,
+                islandContents.* 
+                FROM islandsOfPersonality JOIN islandContents 
+                ON islandsOfPersonality.islandOfPersonalityID = islandContents.islandOfPersonalityID
+                WHERE islandsOfPersonality.islandOfPersonalityID = '$islandID'";
+$islandsResult = executeQuery($islandQuery);
 
 ?>
 
@@ -78,38 +87,37 @@ include("connect.php");
     <div class="blur">
       <div class="noise">
         <div class="content">
-          <h1>Technology Island</h1>
-          <img src="assets/img/technology-island.gif">
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur illum delectus quae quibusdam enim
-            rem
-            corporis sit vero et nisi, laudantium architecto. Repudiandae voluptatibus soluta ea corporis nemo ad
-            incidunt? Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, tempore eaque veritatis illo
-            sapiente
-            quo! Harum, voluptates? Repellat, vero est aspernatur eligendi itaque quaerat incidunt fugit suscipit
-            aliquid,
-            modi expedita.</p>
-          <div class="core-memories-container">
-            <div class="row">
-              <div class="col-4">
-                <div class="core-memory">
-                  <img src="assets/img/JOY.png" alt="">
-                  <h4>Core Memory 1</h4>
+          <?php
+          while ($islandsRow = mysqli_fetch_assoc($islandsResult)) { ?>
+
+            <h1><?php echo $islandsRow['name'] ?></h1>
+            <img src="assets/img/<?php echo $islandsRow['contentImage'] ?>">
+            <p><?php echo $islandsRow['longDescription'] ?></p>
+            <div class="core-memories-container">
+              <div class="row">
+                <div class="col-4">
+                  <div class="core-memory">
+                    <img src="assets/img/JOY.png" alt="">
+                    <h4>Core Memory 1</h4>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="core-memory">
-                  <img src="assets/img/JOY.png" alt="">
-                  <h4>Core Memory 2</h4>
+                <div class="col-4">
+                  <div class="core-memory">
+                    <img src="assets/img/JOY.png" alt="">
+                    <h4>Core Memory 2</h4>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="core-memory">
-                  <img src="assets/img/JOY.png" alt="">
-                  <h4>Core Memory 3</h4>
+                <div class="col-4">
+                  <div class="core-memory">
+                    <img src="assets/img/JOY.png" alt="">
+                    <h4>Core Memory 3</h4>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+
+          <?php
+          } ?>
         </div>
       </div>
     </div>
