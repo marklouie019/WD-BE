@@ -3,13 +3,13 @@ include("connect.php");
 
 $islandID = $_GET['islandOfPersonalityID'];
 
-$islandQuery = "SELECT DISTINCT islandsOfPersonality.image AS contentImage,
+$islandQuery = "SELECT islandsOfPersonality.image AS contentImage,
                 islandsOfPersonality.name,
                 islandsOfPersonality.longDescription,
                 islandContents.* 
                 FROM islandsOfPersonality JOIN islandContents 
                 ON islandsOfPersonality.islandOfPersonalityID = islandContents.islandOfPersonalityID
-                WHERE islandsOfPersonality.islandOfPersonalityID = '$islandID'";
+                WHERE islandsOfPersonality.islandOfPersonalityID = '$islandID' LIMIT 1";
 $islandsResult = executeQuery($islandQuery);
 
 ?>
@@ -27,54 +27,13 @@ $islandsResult = executeQuery($islandQuery);
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="assets/font/font.css">
   <link rel="stylesheet" href="assets/css/style.css">
-
   <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
   <style>
-    body,
-    h1 {
-      font-family: "Inside Out", sans-serif;
-    }
-
-    h1 {
-      text-align: center;
-    }
-
-    body,
-    html {
-      height: 100%;
-    }
-
-    .bgimg {
-      position: relative;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-
-    }
-
-    video {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .blur {
-      background: rgba(62, 62, 62, 0.04);
-      backdrop-filter: blur(24px);
-      height: 100vh;
-    }
-
     .noise {
       background-image: url('assets/img/noise.png');
       background-repeat: repeat;
       background-size: cover;
       height: 100vh;
-    }
-
-    .link {
-      text-decoration: none;
-      color: white;
     }
   </style>
 </head>
@@ -90,9 +49,11 @@ $islandsResult = executeQuery($islandQuery);
           <?php
           while ($islandsRow = mysqli_fetch_assoc($islandsResult)) { ?>
 
-            <h1><?php echo $islandsRow['name'] ?></h1>
-            <img src="assets/img/<?php echo $islandsRow['contentImage'] ?>">
-            <p><?php echo $islandsRow['longDescription'] ?></p>
+            <h1 class="pt-5"><?php echo $islandsRow['name'] ?></h1>
+            <div class="d-flex justify-content-center">
+              <img class="img-fluid mx-auto" src="assets/img/<?php echo $islandsRow['contentImage'] ?>">
+            </div>
+            <p class="mx-auto"><?php echo $islandsRow['longDescription'] ?></p>
             <div class="core-memories-container">
               <div class="row">
                 <div class="col-4">
@@ -116,7 +77,7 @@ $islandsResult = executeQuery($islandQuery);
               </div>
             </div>
 
-          <?php
+            <?php
           } ?>
         </div>
       </div>
