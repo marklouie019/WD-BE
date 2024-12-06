@@ -12,6 +12,7 @@ while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
         $islandRow['islandOfPersonalityID'],
         $islandRow['name'],
         $islandRow['shortDescription'],
+        $islandRow['longDescription'],
         $islandRow['image']
     );
 
@@ -32,76 +33,15 @@ while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="assets/font/font.css">
+    <link rel="stylesheet" href="assets/css/carousel.css">
+    <link rel="stylesheet" href="assets/css/islandlist.css">
     <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
     <style>
-        body,
-        h1,
-        h5 {
-            font-family: "Inside Out", sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-        }
-
-        h5 {
-            font-size: 50px;
-        }
-
-        body,
-        html {
-            height: 100%
-        }
-
-        .bgimg {
-            position: relative;
-            height: 100vh;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .blur {
-            background: rgba(62, 62, 62, 0.04);
-            backdrop-filter: blur(24px);
-            height: 100vh;
-        }
-
         .noise {
             background-image: url('assets/img/noise.png');
             background-repeat: repeat;
             background-size: cover;
             height: 100vh;
-        }
-
-        .link {
-            text-decoration: none;
-            color: white;
-        }
-
-        .island-li {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .carousel-item {
-            width: 100%;
-            height: 550px;
-        }
-
-        .carousel-item:hover {
-            cursor: pointer;
-        }
-
-        .description {
-            font-family: "Studio Feixen Variable", sans-serif;
         }
     </style>
 </head>
@@ -113,17 +53,20 @@ while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
         </video>
         <div class="blur">
             <div class="noise">
+                <a href="./">
+                    <div class="fixed-top w3-padding-large w3-xlarge">
+                        <img src="assets/img/miop-logo-2.png" style="height:75px">
+                    </div>
+                </a>
                 <div id="carouselExampleCaptions" class="carousel slide">
                     <div class="carousel-inner">
-                        <?php $counter = 0; ?>
-                        <?php foreach ($cards as $card) { ?>
-                            <?php
+                        <?php $counter = 0;
+                        foreach ($cards as $card) {
                             $status = $counter == 0;
                             $card->isIslandActive($status);
                             echo $card->buildCard();
                             $counter++;
-                            ?>
-                        <?php } ?>
+                        } ?>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
                         data-bs-slide="prev">

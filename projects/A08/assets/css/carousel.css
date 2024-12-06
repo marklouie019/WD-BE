@@ -1,0 +1,35 @@
+.carousel-control-prev,
+.carousel-control-next {
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 55px;
+    height: 35px;
+}
+
+.carousel-control-prev {
+    left: 18vw;
+    top: 50vh;
+}
+
+.carousel-control-next {
+    right: 18vw;
+    top: 50vh;
+}
+
+@media(max-width:781px) {
+    .carousel-control-prev {
+        left: 20px;
+        top: 50vh;
+    }
+
+    .carousel-control-next {
+        right: 20px;
+        top: 50vh;
+    }
+}

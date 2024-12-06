@@ -38,7 +38,7 @@ $pageContent = 'island-list.php';
       height: 100vh;
       width: 100%;
       overflow: hidden;
-      
+      background: #8C68FC;
     }
 
     video {
@@ -76,9 +76,6 @@ $pageContent = 'island-list.php';
     </video>
     <div class="blur">
       <div class="noise">
-        <div class="w3-display-topleft w3-padding-large w3-xlarge">
-          Inside Out
-        </div>
         <div class="w3-display-middle">
           <h1 class="w3-jumbo w3-animate-top">My <br>
             Islands oF

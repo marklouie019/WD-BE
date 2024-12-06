@@ -1,10 +1,12 @@
 <?php
 include("connect.php");
+include("assets/php/classes.php");
 
 $islandID = $_GET['islandOfPersonalityID'];
 
 $islandQuery = "SELECT islandsOfPersonality.image AS contentImage,
                 islandsOfPersonality.name,
+                islandsOfPersonality.shortDescription,
                 islandsOfPersonality.longDescription,
                 islandContents.* 
                 FROM islandsOfPersonality JOIN islandContents 
@@ -12,13 +14,51 @@ $islandQuery = "SELECT islandsOfPersonality.image AS contentImage,
                 WHERE islandsOfPersonality.islandOfPersonalityID = '$islandID' LIMIT 1";
 $islandsResult = executeQuery($islandQuery);
 
+$selectedMemoryID = 1;
+$memoryContent = "";
+
+$memoryQuery = "SELECT * FROM islandContents WHERE islandOfPersonalityID = '$islandID'";
+$memoryResult = executeQuery($memoryQuery);
+
+$selectedMemQuery = "SELECT content FROM islandContents WHERE islandContentID = '$selectedMemoryID'";
+$selectedMemQueryResult = executeQuery($selectedMemQuery);
+
+if ($selectedMemoryRow = mysqli_fetch_assoc($selectedMemQueryResult)) {
+  $memoryContent = $selectedMemoryRow['content'];
+}
+
+while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
+  $islandInfo = new IslandPersonality(
+    $islandRow['islandOfPersonalityID'],
+    $islandRow['name'],
+    $islandRow['shortDescription'],
+    $islandRow['longDescription'],
+    $islandRow['contentImage']
+  );
+}
+
+$memoryBalls = array();
+$counter = 1;
+
+while ($memoryRow = mysqli_fetch_assoc($memoryResult)) {
+  $m = new CoreMemory(
+    $memoryRow['color'],
+    $memoryRow['image'],
+    $memoryRow['content'],
+    $counter
+  );
+
+  array_push($memoryBalls, $m);
+  $counter++;
+}
+
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>My Islands of Personality</title>
+  <title>Core Memories</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -26,7 +66,7 @@ $islandsResult = executeQuery($islandQuery);
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="assets/font/font.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/view.css">
   <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
   <style>
     .noise {
@@ -46,39 +86,24 @@ $islandsResult = executeQuery($islandQuery);
     <div class="blur">
       <div class="noise">
         <div class="content">
-          <?php
-          while ($islandsRow = mysqli_fetch_assoc($islandsResult)) { ?>
-
-            <h1 class="pt-5"><?php echo $islandsRow['name'] ?></h1>
-            <div class="d-flex justify-content-center">
-              <img class="img-fluid mx-auto" src="assets/img/<?php echo $islandsRow['contentImage'] ?>">
+          <a href="./">
+            <div class="w3-padding-large w3-xlarge">
+              <img src="assets/img/miop-logo-2.png" style="height:75px">
             </div>
-            <p class="mx-auto"><?php echo $islandsRow['longDescription'] ?></p>
-            <div class="core-memories-container">
-              <div class="row">
-                <div class="col-4">
-                  <div class="core-memory">
-                    <img src="assets/img/JOY.png" alt="">
-                    <h4>Core Memory 1</h4>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="core-memory">
-                    <img src="assets/img/JOY.png" alt="">
-                    <h4>Core Memory 2</h4>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="core-memory">
-                    <img src="assets/img/JOY.png" alt="">
-                    <h4>Core Memory 3</h4>
-                  </div>
-                </div>
-              </div>
+          </a>
+          <?php echo $islandInfo->buildIsland(); ?>
+          <div class="core-memories-container">
+            <div class="row">
+              <?php
+              foreach($memoryBalls as $memoryBall){
+                echo $memoryBall->buildMemory();
+              }
+              ?>
             </div>
-
-            <?php
-          } ?>
+          </div>
+          <div class="memory-description">
+            <p><?php echo $memoryContent ?></p>
+          </div>
         </div>
       </div>
     </div>
@@ -86,6 +111,7 @@ $islandsResult = executeQuery($islandQuery);
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 
 </html>
