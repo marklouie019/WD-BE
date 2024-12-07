@@ -9,14 +9,79 @@ class IslandPersonality
     public $color;
     public $image;
     public $status = 'active';
+    public $memoryOrbs = array();
+    public $memoryContent = "";
 
-    public function __construct($islandID, $name, $shortDescription, $longDescription, $image)
+    public function __construct($islandID)
     {
         $this->islandID = $islandID;
-        $this->name = $name;
-        $this->shortDescription = $shortDescription;
-        $this->longDescription = $longDescription;
-        $this->image = $image;
+
+        $this->loadIslandData();
+        $this->loadMemoryOrbs();
+        $this->loadSelectedMemoryContent(1);
+    }
+
+    public function getAllIslands()
+    {
+        $query = "SELECT * FROM islandsOfPersonality";
+        $result = executeQuery($query);
+
+        $islands = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $isle = new IslandPersonality($row['islandOfPersonalityID']);
+            array_push($islands, $isle);
+        }
+
+        return $islands;
+
+    }
+
+    public function loadIslandData()
+    {
+        $query = "SELECT islandsOfPersonality.image AS contentImage,
+                         islandsOfPersonality.name,
+                         islandsOfPersonality.shortDescription,
+                         islandsOfPersonality.longDescription
+                  FROM islandsOfPersonality
+                  WHERE islandsOfPersonality.islandOfPersonalityID = '$this->islandID'
+                  LIMIT 1";
+
+        $result = executeQuery($query);
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            $this->name = $row['name'];
+            $this->shortDescription = $row['shortDescription'];
+            $this->longDescription = $row['longDescription'];
+            $this->image = $row['contentImage'];
+        }
+    }
+
+    public function loadMemoryOrbs()
+    {
+        $query = "SELECT * FROM islandContents WHERE islandOfPersonalityID = '$this->islandID'";
+        $result = executeQuery($query);
+
+        $counter = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $memory = new CoreMemory(
+                $row['color'],
+                $row['image'],
+                $row['content'],
+                $counter
+            );
+            array_push($this->memoryOrbs, $memory);
+            $counter++;
+        }
+    }
+
+    public function loadSelectedMemoryContent($selectedMemoryID)
+    {
+        $query = "SELECT content FROM islandContents WHERE islandContentID = '$selectedMemoryID'";
+        $result = executeQuery($query);
+
+        if ($row = mysqli_fetch_assoc($result)) {
+            $this->memoryContent = $row['content'];
+        }
     }
 
     public function buildCard()
@@ -44,18 +109,6 @@ class IslandPersonality
     public function isIslandActive($status)
     {
         $this->status = $status ? 'active' : '';
-    }
-    public function getIslandQuery()
-    {
-        $islandQuery = "SELECT islandsOfPersonality.image AS contentImage,
-                islandsOfPersonality.name,
-                islandsOfPersonality.shortDescription,
-                islandsOfPersonality.longDescription,
-                islandContents.* 
-                FROM islandsOfPersonality JOIN islandContents 
-                ON islandsOfPersonality.islandOfPersonalityID = islandContents.islandOfPersonalityID
-                WHERE islandsOfPersonality.islandOfPersonalityID = '$this->islandID' LIMIT 1";
-        $islandsResult = executeQuery($islandQuery);
     }
 }
 

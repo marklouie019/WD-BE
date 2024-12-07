@@ -3,54 +3,9 @@ include("connect.php");
 include("assets/php/classes.php");
 
 $islandID = $_GET['islandOfPersonalityID'];
-
-$islandQuery = "SELECT islandsOfPersonality.image AS contentImage,
-                islandsOfPersonality.name,
-                islandsOfPersonality.shortDescription,
-                islandsOfPersonality.longDescription,
-                islandContents.* 
-                FROM islandsOfPersonality JOIN islandContents 
-                ON islandsOfPersonality.islandOfPersonalityID = islandContents.islandOfPersonalityID
-                WHERE islandsOfPersonality.islandOfPersonalityID = '$islandID' LIMIT 1";
-$islandsResult = executeQuery($islandQuery);
-
-$selectedMemoryID = 1;
-$memoryContent = "";
-
-$memoryQuery = "SELECT * FROM islandContents WHERE islandOfPersonalityID = '$islandID'";
-$memoryResult = executeQuery($memoryQuery);
-
-$selectedMemQuery = "SELECT content FROM islandContents WHERE islandContentID = '$selectedMemoryID'";
-$selectedMemQueryResult = executeQuery($selectedMemQuery);
-
-if ($selectedMemoryRow = mysqli_fetch_assoc($selectedMemQueryResult)) {
-  $memoryContent = $selectedMemoryRow['content'];
-}
-
-while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
-  $islandInfo = new IslandPersonality(
-    $islandRow['islandOfPersonalityID'],
-    $islandRow['name'],
-    $islandRow['shortDescription'],
-    $islandRow['longDescription'],
-    $islandRow['contentImage']
-  );
-}
-
-$memoryBalls = array();
-$counter = 1;
-
-while ($memoryRow = mysqli_fetch_assoc($memoryResult)) {
-  $m = new CoreMemory(
-    $memoryRow['color'],
-    $memoryRow['image'],
-    $memoryRow['content'],
-    $counter
-  );
-
-  array_push($memoryBalls, $m);
-  $counter++;
-}
+$islandPersonality = new IslandPersonality($islandID);
+$coreMemoryOrbs = $islandPersonality->memoryOrbs;
+$coreMemoryContent = $islandPersonality->memoryContent;
 
 ?>
 
@@ -67,6 +22,7 @@ while ($memoryRow = mysqli_fetch_assoc($memoryResult)) {
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="assets/font/font.css">
   <link rel="stylesheet" href="assets/css/view.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
   <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
   <style>
     .noise {
@@ -86,23 +42,19 @@ while ($memoryRow = mysqli_fetch_assoc($memoryResult)) {
     <div class="blur">
       <div class="noise">
         <div class="content">
-          <a href="./">
-            <div class="w3-padding-large w3-xlarge">
-              <img src="assets/img/miop-logo-2.png" style="height:75px">
-            </div>
-          </a>
-          <?php echo $islandInfo->buildIsland(); ?>
+          <?php include('assets/php/navbar.php'); ?>
+          <?php echo $islandPersonality->buildIsland(); ?>
           <div class="core-memories-container">
             <div class="row">
               <?php
-              foreach($memoryBalls as $memoryBall){
-                echo $memoryBall->buildMemory();
+              foreach ($coreMemoryOrbs as $coreMemoryOrb) {
+                echo $coreMemoryOrb->buildMemory();
               }
               ?>
             </div>
           </div>
           <div class="memory-description">
-            <p><?php echo $memoryContent ?></p>
+            <p><?php echo $coreMemoryContent ?></p>
           </div>
         </div>
       </div>

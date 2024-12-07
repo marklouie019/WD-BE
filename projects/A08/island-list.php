@@ -2,22 +2,8 @@
 include("connect.php");
 include("assets/php/classes.php");
 
-$cards = array();
-
-$islandsQuery = "SELECT * FROM islandsOfPersonality";
-$islandsResult = executeQuery($islandsQuery);
-
-while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
-    $c = new IslandPersonality(
-        $islandRow['islandOfPersonalityID'],
-        $islandRow['name'],
-        $islandRow['shortDescription'],
-        $islandRow['longDescription'],
-        $islandRow['image']
-    );
-
-    array_push($cards, $c);
-}
+$islandsPersonality = new IslandPersonality(null);
+$cards = $islandsPersonality->getAllIslands();
 
 ?>
 
@@ -35,6 +21,7 @@ while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
     <link rel="stylesheet" href="assets/font/font.css">
     <link rel="stylesheet" href="assets/css/carousel.css">
     <link rel="stylesheet" href="assets/css/islandlist.css">
+    <link rel="stylesheet" href="assets/css/navbar.css">
     <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
     <style>
         .noise {
@@ -53,11 +40,7 @@ while ($islandRow = mysqli_fetch_assoc($islandsResult)) {
         </video>
         <div class="blur">
             <div class="noise">
-                <a href="./">
-                    <div class="fixed-top w3-padding-large w3-xlarge">
-                        <img src="assets/img/miop-logo-2.png" style="height:75px">
-                    </div>
-                </a>
+                <?php include('assets/php/navbar.php'); ?>
                 <div id="carouselExampleCaptions" class="carousel slide">
                     <div class="carousel-inner">
                         <?php $counter = 0;

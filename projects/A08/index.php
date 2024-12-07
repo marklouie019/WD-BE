@@ -17,6 +17,7 @@ $pageContent = 'island-list.php';
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
   <link rel="stylesheet" href="assets/font/font.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
   <link rel="icon" href="assets/img/miop-logo.svg" type="image/x-icon">
   <style>
     body,
@@ -66,6 +67,17 @@ $pageContent = 'island-list.php';
       color: white;
     }
 
+    .enter{
+      text-decoration: none;
+      color: white;
+      font-size: 25px;
+      transition: transform 0.3s ease;
+    }
+
+    .enter:hover {
+      color: #FDF878 !important;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
@@ -76,15 +88,13 @@ $pageContent = 'island-list.php';
     </video>
     <div class="blur">
       <div class="noise">
+        <?php include('assets/php/navbar.php'); ?>
         <div class="w3-display-middle">
-          <h1 class="w3-jumbo w3-animate-top">My <br>
-            Islands oF
-            <br>
-            PERsonALitY
-            <hr class="w3-border-white my-3" style="margin:auto;width:100%;background:white;">
-            <a href="<?php echo $pageContent;?>" class="link">
-              <p class="w3-large w3-center pt-3">ENTER</p>
-            </a>
+          <h1 class="w3-jumbo w3-animate-top">Welcome to my HeadQuarters </h1>
+          <hr class="w3-border-white my-3" style="margin:auto;width:75%;color:white !important;">
+          <a href="<?php echo $pageContent; ?>" class="enter">
+            <p class="w3-center enter">ENTER</p>
+          </a>
         </div>
         <div class="w3-display-bottomleft w3-padding-large">
           Powered by <a href="https://www.w3schools.com/w3css/default.asp" class="link" target="_blank">w3.css</a>
